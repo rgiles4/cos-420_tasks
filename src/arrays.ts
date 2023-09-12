@@ -43,7 +43,13 @@ export function stringsToIntegers(numbers: string[]): number[] {
  */
 // Remember, you can write functions as lambdas too! They work exactly the same.
 export const removeDollars = (amounts: string[]): number[] => {
-    return [];
+    const justNums = amounts.map((value: string): string =>
+        value.replace("$", "")
+    );
+    const integer = justNums.map((num: string): number =>
+        Number.parseInt(num) ? +num : 0
+    );
+    return integer;
 };
 
 /**
@@ -52,7 +58,13 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    return [];
+    const questions = messages.map((question: string): string =>
+        question.includes("?") ? question : question // <- left-most "question" is incorrect
+    );
+    const exclaims = questions.map((exclaim: string): string =>
+        exclaim.includes("!") ? exclaim.toUpperCase() : exclaim
+    );
+    return exclaims;
 };
 
 /**
@@ -60,7 +72,8 @@ export const shoutIfExclaiming = (messages: string[]): string[] => {
  * 4 letters long.
  */
 export function countShortWords(words: string[]): number {
-    return 0;
+    const shortWords = words.filter((word: string): boolean => word.length < 4);
+    return shortWords.length;
 }
 
 /**
@@ -80,7 +93,19 @@ export function allRGB(colors: string[]): boolean {
  * And the array [] would become "0=0".
  */
 export function makeMath(addends: number[]): string {
-    return "";
+    let sum: number, adds: string;
+    if (addends.length === 0) {
+        sum = 0;
+        adds = "0";
+    } else {
+        sum = addends.reduce(
+            (currentTotal: number, num: number) => currentTotal + num,
+            0
+        );
+        adds = addends.join("+");
+    }
+
+    return sum + "=" + adds;
 }
 
 /**
@@ -93,5 +118,7 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-    return [];
+   /** const findNegative = values.findIndex((num: number): boolean => num < 0);
+    const sum = values.reduce((num: number): number)
+    return []; */
 }
