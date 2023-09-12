@@ -58,8 +58,9 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    const questions = messages.map((question: string): string =>
-        question.includes("?") ? question : question // <- left-most "question" is incorrect
+    const questions = messages.map(
+        (question: string): string =>
+            question.includes("?") ? question : question // <- left-most "question" is incorrect
     );
     const exclaims = questions.map((exclaim: string): string =>
         exclaim.includes("!") ? exclaim.toUpperCase() : exclaim
@@ -94,9 +95,10 @@ export function allRGB(colors: string[]): boolean {
  */
 export function makeMath(addends: number[]): string {
     let sum: number, adds: string;
+
+    // Catch for empty addends array
     if (addends.length === 0) {
-        sum = 0;
-        adds = "0";
+        (sum = 0), (adds = "0"); // Set returned values to 0 so output is "0=0"
     } else {
         sum = addends.reduce(
             (currentTotal: number, num: number) => currentTotal + num,
@@ -118,7 +120,26 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-   /** const findNegative = values.findIndex((num: number): boolean => num < 0);
-    const sum = values.reduce((num: number): number)
-    return []; */
+    let sum: number, newValues: number[] = [];
+    // Create a mutable copy of the values array
+    const copyValues = values;
+    // Finds location of negative value
+    const findNegative = copyValues.findIndex(
+        (num: number): boolean => num < 0
+    );
+    if (findNegative > -1) {
+        // Sum numbers before index of negative value
+        sum = copyValues
+            .slice(0, findNegative)
+            .reduce((a: number, b: number) => a + b, 0);
+        // Splice sum into array after index of negative value or the end
+        newValues = copyValues.splice(findNegative + 1, 0, sum);
+    } else {
+        sum = copyValues.reduce(
+            (currentSum: number, num: number) => currentSum + num,
+            0
+        );
+        newValues = [...copyValues, sum];
+    }
+    return newValues;
 }
