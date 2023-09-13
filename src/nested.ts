@@ -6,7 +6,10 @@ import { Question, QuestionType } from "./interfaces/question";
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    return [];
+    const published = questions.filter(
+        (question: Question) => question.published
+    );
+    return published;
 }
 
 /**
@@ -15,7 +18,13 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    return [];
+    const nonEmpty = questions.filter(
+        (question: Question): boolean =>
+            question.body !== "" &&
+            question.expected !== "" &&
+            question.options.length !== 0
+    );
+    return nonEmpty; // Doesn't pass Test
 }
 
 /***
@@ -26,7 +35,14 @@ export function findQuestion(
     questions: Question[],
     id: number
 ): Question | null {
-    return null;
+    const question = questions.find(
+        (question: Question): boolean => question.id === id
+    );
+    if (question !== undefined) {
+        return question;
+    } else {
+        return null;
+    }
 }
 
 /**
@@ -34,7 +50,10 @@ export function findQuestion(
  * with the given `id`.
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    return [];
+    const remove = questions.filter(
+        (question: Question): boolean => question.id !== id
+    );
+    return remove; // Doesn't Pass Test
 }
 
 /***
@@ -42,21 +61,35 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
  * questions, as an array.
  */
 export function getNames(questions: Question[]): string[] {
-    return [];
+    const names = questions.map((question: Question): string => question.name);
+    return names;
 }
 
 /***
  * Consumes an array of questions and returns the sum total of all their points added together.
  */
 export function sumPoints(questions: Question[]): number {
-    return 0;
+    const points = questions.reduce(
+        (currentSum: number, question: Question) =>
+            currentSum + question.points,
+        0
+    );
+    return points;
 }
 
 /***
  * Consumes an array of questions and returns the sum total of the PUBLISHED questions.
  */
 export function sumPublishedPoints(questions: Question[]): number {
-    return 0;
+    const published = questions.filter(
+        (question: Question): boolean => question.published !== false
+    );
+    const sumPoints = published.reduce(
+        (currentSum: number, question: Question) =>
+            currentSum + question.points,
+        0
+    );
+    return sumPoints;
 }
 
 /***
@@ -77,7 +110,15 @@ id,name,options,points,published
  * Check the unit tests for more examples!
  */
 export function toCSV(questions: Question[]): string {
-    return "";
+    const questionCSV =
+        "id,name,options,points,published\n" +
+        questions
+            .map(
+                (question: Question): string =>
+                    `${question.id},${question.name},${question.options.length},${question.points},${question.published}`
+            )
+            .join("\n");
+    return questionCSV;
 }
 
 /**
@@ -86,7 +127,15 @@ export function toCSV(questions: Question[]): string {
  * making the `text` an empty string, and using false for both `submitted` and `correct`.
  */
 export function makeAnswers(questions: Question[]): Answer[] {
-    return [];
+    const answers = questions.map(
+        (question: Question): Answer => ({
+            questionId: question.id,
+            text: "",
+            submitted: false,
+            correct: false
+        })
+    );
+    return answers;
 }
 
 /***
@@ -94,7 +143,10 @@ export function makeAnswers(questions: Question[]): Answer[] {
  * each question is now published, regardless of its previous published status.
  */
 export function publishAll(questions: Question[]): Question[] {
-    return [];
+    const published = questions.map(
+        (question: Question): Question => ({ ...question, published: true })
+    );
+    return published;
 }
 
 /***
@@ -102,7 +154,26 @@ export function publishAll(questions: Question[]): Question[] {
  * are the same type. They can be any type, as long as they are all the SAME type.
  */
 export function sameType(questions: Question[]): boolean {
-    return false;
+    let check = false;
+    const copy = [...questions];
+    if (
+        copy.every(
+            (question: Question): boolean =>
+                question.type === "multiple_choice_question"
+        )
+    ) {
+        check = true;
+    } else if (
+        copy.every(
+            (question: Question): boolean =>
+                question.type === "short_answer_question"
+        )
+    ) {
+        check = true;
+    } else {
+        check = false;
+    }
+    return check;
 }
 
 /***
@@ -116,7 +187,20 @@ export function addNewQuestion(
     name: string,
     type: QuestionType
 ): Question[] {
-    return [];
+    const newQuestion = [
+        ...questions,
+        {
+            id,
+            name,
+            type,
+            body: "",
+            expected: "",
+            options: [],
+            points: 1,
+            published: false
+        }
+    ];
+    return newQuestion;
 }
 
 /***
@@ -129,7 +213,13 @@ export function renameQuestionById(
     targetId: number,
     newName: string
 ): Question[] {
-    return [];
+    const targeted = questions.map(
+        (question: Question): Question => ({
+            ...question,
+            name: question.id === targetId ? newName : question.name
+        })
+    );
+    return targeted;
 }
 
 /***
@@ -144,7 +234,17 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType
 ): Question[] {
-    return [];
+    const targeted = questions.map(
+        (question: Question): Question => ({
+            ...question,
+            type: question.id === targetId ? newQuestionType : question.type,
+            options:
+                question.type !== "multiple_choice_question"
+                    ? []
+                    : question.options
+        })
+    );
+    return targeted; // Doesn't Pass Test
 }
 
 /**
