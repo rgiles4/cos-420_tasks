@@ -58,11 +58,10 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    const questions = messages.map(
-        (question: string): string =>
-            question.includes("?") ? question : question // <- left-most "question" is incorrect
+    const remove = messages.filter(
+        (question: string): boolean => !question.includes("?")
     );
-    const exclaims = questions.map((exclaim: string): string =>
+    const exclaims = remove.map((exclaim: string): string =>
         exclaim.includes("!") ? exclaim.toUpperCase() : exclaim
     );
     return exclaims;
@@ -83,7 +82,11 @@ export function countShortWords(words: string[]): number {
  * then return true.
  */
 export function allRGB(colors: string[]): boolean {
-    return false;
+    const checkColor = colors.every(
+        (color: string): boolean =>
+            color === "red" || color === "blue" || color === "green"
+    );
+    return checkColor;
 }
 
 /**
@@ -98,6 +101,8 @@ export function makeMath(addends: number[]): string {
 
     // Catch for empty addends array
     if (addends.length === 0) {
+        //(prettier was being annoying, so I disabled extra parenthesis to avoid the warning)
+        // eslint-disable-next-line no-extra-parens
         (sum = 0), (adds = "0"); // Set returned values to 0 so output is "0=0"
     } else {
         sum = addends.reduce(
@@ -120,7 +125,7 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-    let sum: number, newValues: number[] = [];
+    let sum: number, newValues: number[];
     // Create a mutable copy of the values array
     const copyValues = values;
     // Finds location of negative value
@@ -132,13 +137,15 @@ export function injectPositive(values: number[]): number[] {
         sum = copyValues
             .slice(0, findNegative)
             .reduce((a: number, b: number) => a + b, 0);
-        // Splice sum into array after index of negative value or the end
+        // Splice sum into array after index of negative value
         newValues = copyValues.splice(findNegative + 1, 0, sum);
     } else {
+        // Sum all numbers in the array
         sum = copyValues.reduce(
             (currentSum: number, num: number) => currentSum + num,
             0
         );
+        // Inject sum to the end of the array
         newValues = [...copyValues, sum];
     }
     return newValues;
