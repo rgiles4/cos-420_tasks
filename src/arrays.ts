@@ -125,20 +125,31 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
+    // Variables
     let sum: number, newValues: number[];
-    // Create a mutable copy of the values array
-    const copyValues = values;
-    // Finds location of negative value
+    const copyValues = [...values]; // Mutable version of parameter array
+
+    // Find index of negative value, if there is one
     const findNegative = copyValues.findIndex(
         (num: number): boolean => num < 0
     );
+    /** If statement:
+     * > -1 -> Sum values before found index and splice it after found index.
+     * 0 -> splice "0" after index
+     * === -1 -> Reduce array and append value to the end of the array.
+     */
     if (findNegative > -1) {
-        // Sum numbers before index of negative value
-        sum = copyValues
-            .slice(0, findNegative)
-            .reduce((a: number, b: number) => a + b, 0);
-        // Splice sum into array after index of negative value
-        newValues = copyValues.splice(findNegative + 1, 0, sum);
+        // Sum the numbers before the index of the negative value
+        const subarr = copyValues.slice(0, findNegative);
+        sum = subarr.reduce((a: number, b: number) => a + b, 0);
+        // Splice sum into the returned array AFTER the index of the negative value
+        copyValues.splice(findNegative + 1, 0, sum);
+        newValues = [...copyValues];
+    } else if (findNegative === 0) {
+        // Splice 0 into array if the negative value is at index 0
+        sum = 0;
+        copyValues.splice(findNegative + 1, 0, sum);
+        newValues = [...copyValues];
     } else {
         // Sum all numbers in the array
         sum = copyValues.reduce(
