@@ -31,9 +31,9 @@ export function makeBlankQuestion(
  * HINT: Look up the `trim` and `toLowerCase` functions.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    const correct: boolean = question.expected === answer.trim().toLowerCase();
+    const correct: boolean =
+        question.expected.trim().toLowerCase() === answer.trim().toLowerCase();
     return correct;
-    // Test does not pass
 }
 
 /**
@@ -50,7 +50,11 @@ export function isValid(question: Question, answer: string): boolean {
             isValid = true;
         }
     } else if (copiedQuestion.type === "multiple_choice_question") {
-        if (answer.trim().toLowerCase() === copiedQuestion.expected) {
+        if (
+            answer === copiedQuestion.options[0] ||
+            answer === copiedQuestion.options[1] ||
+            answer === copiedQuestion.options[2]
+        ) {
             isValid = true;
         }
     }

@@ -41,8 +41,8 @@ function App(): JSX.Element {
                     <Col>
                         <div
                             style={{
-                                width: "5px",
-                                height: "10px",
+                                width: "500px",
+                                height: "10000px",
                                 backgroundColor: "red"
                             }}
                         ></div>
@@ -50,8 +50,8 @@ function App(): JSX.Element {
                     <Col>
                         <div
                             style={{
-                                width: "5px",
-                                height: "10px",
+                                width: "500px",
+                                height: "10000px",
                                 backgroundColor: "red"
                             }}
                         ></div>
