@@ -19,9 +19,9 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
     const nonEmpty = questions.filter(
-        (question: Question): boolean =>
-            question.body !== "" &&
-            question.expected !== "" &&
+        (question) =>
+            question.body !== "" ||
+            question.expected !== "" ||
             question.options.length !== 0
     );
     return nonEmpty; // Doesn't pass Test
@@ -53,7 +53,7 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
     const remove = questions.filter(
         (question: Question): boolean => question.id !== id
     );
-    return remove; // Doesn't Pass Test
+    return remove;
 }
 
 /***

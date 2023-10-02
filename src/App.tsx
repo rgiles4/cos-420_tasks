@@ -25,13 +25,13 @@ function App(): JSX.Element {
                     src={img}
                     alt="A composite image of a guy sitting in a field I made in High School"
                 />
-                <p>
-                    <ol>
-                        <li>This is a</li>
-                        <li>3 Item List that</li>
-                        <li>Is not part of a paragraph style</li>
-                    </ol>
-                </p>
+
+                <ol>
+                    <li>This is a</li>
+                    <li>3 Item List that</li>
+                    <li>Is not part of a paragraph style</li>
+                </ol>
+
                 <Button onClick={() => console.log("Hello World!")}>
                     Log Hello World
                 </Button>
@@ -42,7 +42,7 @@ function App(): JSX.Element {
                         <div
                             style={{
                                 width: "500px",
-                                height: "1000px",
+                                height: "10000px",
                                 backgroundColor: "red"
                             }}
                         ></div>
@@ -51,7 +51,7 @@ function App(): JSX.Element {
                         <div
                             style={{
                                 width: "500px",
-                                height: "1000px",
+                                height: "10000px",
                                 backgroundColor: "red"
                             }}
                         ></div>
